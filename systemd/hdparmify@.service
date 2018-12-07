@@ -1,0 +1,7 @@
+[Unit]
+Description=Hard drive management with hdparm (apply)
+After=%i.device
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/hdparmify -td /%I apply

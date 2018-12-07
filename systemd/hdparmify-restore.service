@@ -1,0 +1,11 @@
+[Unit]
+Description=Hard drive management with hdparm (restore)
+Before=shutdown.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/hdparmify restore
+
+[Install]
+WantedBy=shutdown.target
+Also=hdparmify-reapply.service

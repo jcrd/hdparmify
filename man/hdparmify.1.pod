@@ -1,0 +1,117 @@
+=head1 NAME
+
+hdparmify - hard drive management with hdparm
+
+=head1 SYNOPSIS
+
+B<hdparmify> [options] [command]
+
+=head1 DESCRIPTION
+
+hdparmify applies B<hdparm> options to hard drives via a udev rule.
+It also provides B<systemd> services: I<hdparmify-reapply> to reapply
+options after waking up and I<hdparmify-restore> to restore devices to
+their default state before shutdown.
+
+Supported B<hdparm> flags are: B<-B>, B<-M>, B<-S>, B<-y>, B<-Y>.
+
+=head1 OPTIONS
+
+=over
+
+=item B<-h>
+
+Show help message.
+
+=item B<-c> I<CONFIG>
+
+Path to configuration file.
+
+=item B<-d> I<DEVICE>
+
+Device to affect.
+
+=item B<-t>
+
+Exit successfully if device not in config.
+
+=back
+
+=head1 COMMANDS
+
+=over
+
+=item B<apply>
+
+Affect device specified with B<-d> or all devices in config that exist.
+
+=item B<reset>
+
+Reset state.
+
+=item B<reapply>
+
+Reset state and apply.
+
+=item B<restore>
+
+Restore devices to their default state.
+
+Currently only the I<standby_timeout=> option is restored by setting it to 0.
+
+=item B<restore>
+
+Print status.
+
+=back
+
+=head1 CONFIGURATION
+
+Sections in the configuration file F</etc/hdparmify.conf> are names of devices.
+The available options are shown below (with the corresponding B<hdparm> flag in
+parentheses). See B<hdparm>(8) for details about each option.
+
+=over
+
+=item I<power_management=>
+
+Set Advanced Power Management (B<-B>). Values are in the range 1-255.
+
+=item I<acoustic_management=>
+
+Set Automatic Acoustic Management (B<-M>). Values are in the range 0-254.
+
+=item I<standby_timeout=>
+
+Put the drive into idle (low-power) mode and set the standby (spindown)
+timeout (B<-S>). Values are in the range 0-253,255.
+
+=item I<power_mode=>
+
+This option takes one of two values: standby (B<-y>) or sleep (B<-Y>).
+Standby mode usually causes a device to spin down.
+Sleep mode causes a device to shut down completely.
+
+=item I<delay=>
+
+This option is specific to B<hdparmify>. Its value is the number of seconds to
+wait before affecting a device.
+
+=back
+
+=head1 AUTHOR
+
+James Reed E<lt>jcrd@tuta.ioE<gt>
+
+=head1 REPORTING BUGS
+
+Bugs and issues can be reported here:
+L<https://github.com/jcrd/hdparmify/issues>
+
+=head1 COPYRIGHT
+
+Copyright 2018 James Reed. hdparmify is licensed under the MIT License.
+
+=head1 SEE ALSO
+
+B<hdparm>(8), B<udev>(7), B<systemd>(1)

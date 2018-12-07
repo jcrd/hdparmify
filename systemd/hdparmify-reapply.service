@@ -1,0 +1,11 @@
+[Unit]
+Description=Hard drive management with hdparm (reapply)
+After=sleep.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/hdparmify reapply
+
+[Install]
+WantedBy=sleep.target
+Also=hdparmify-restore.service

@@ -1,0 +1,187 @@
+#!/bin/bash
+
+# This project is licensed under the MIT License (see LICENSE).
+
+set -eu
+shopt -s nullglob
+
+readonly rundir='/run/hdparmify'
+
+config='/etc/hdparmify.conf'
+device=''
+try=false
+
+usage() {
+    echo 'usage: hdparmify [options] [command]
+
+options:
+  -h         Show help message
+  -c CONFIG  Path to config
+  -d DEVICE  Device to affect
+  -t         Exit successfully if device not in config
+
+commands:
+  apply      Affect devices
+  reset      Reset state
+  reapply    Reset state and apply
+  restore    Restore devices to default state
+  status     Print status'
+}
+
+status() {
+    local dev
+    local bold
+
+    for f in "$rundir"/*; do
+        dev="$(iniq "$f")"
+        [[ -t 1 ]] && bold="\033[1m$dev\033[0m"
+        echo -e "${bold-$dev} - $(date -r "$f")"
+        iniq -p "$dev" -f '  %k=%v' "$f"
+    done
+    exit
+}
+
+get_state() {
+    for f in "$rundir"/*; do
+        if [[ "$(iniq "$f")" == "$1" ]]; then
+            echo "$f"
+            return
+        fi
+    done
+    return 1
+}
+
+apply() {
+    local dev="$1"
+    local args=''
+    local opts
+    local delay
+    local state
+
+    get_state "$dev" > /dev/null && return 1
+
+    if ! opts="$(iniq -q -p "$dev" -f '%k=%v' "$config")"; then
+        $try && exit
+        echo "$dev not in $config" >&2
+        exit 1
+    fi
+
+    while IFS='=' read -r k v; do
+        case "$k" in
+            power_management) args+=" -B $v" ;;
+            acoustic_management) args+=" -M $v" ;;
+            standby_timeout) args+=" -S $v" ;;
+            power_mode)
+                case "$v" in
+                    standby) args+=" -y" ;;
+                    sleep) args+=" -Y" ;;
+                    *)
+                        echo "Invalid power_mode value: $v" >&2
+                        exit 1
+                esac
+                ;;
+            delay) delay="$v" ;;
+            *)
+                echo "Unknown option: $k" >&2
+                exit 1
+        esac
+    done <<< "$opts"
+
+    (
+        [[ -n "${delay-}" ]] && sleep "$delay"
+
+        if hdparm $args "$dev"; then
+            # replace all / with - in device path
+            state="${dev//\//-}"
+            [[ ! -d "$rundir" ]] && mkdir -p "$rundir"
+            # exclude the delay option from saved state
+            echo -e "[$dev]\n$opts" | sed '/delay=/d' > "$rundir/${state:1}"
+        fi
+    ) &
+}
+
+restore() {
+    local dev="$1"
+    local state="$2"
+    local restored=false
+
+    while IFS='=' read -r k v; do
+        case "$k" in
+            standby_timeout)
+                hdparm -S 0 "$dev"
+                restored=true
+                ;;
+        esac
+    done < <(iniq -p "$dev" "$state")
+
+    $restored && rm "$state"
+}
+
+while getopts ':hc:d:t' opt; do
+    case "$opt" in
+        h) usage; exit ;;
+        c) config="$OPTARG" ;;
+        d) device="$OPTARG"
+           if [[ ! -b "$device" ]]; then
+               echo "$device is not a block device" >&2
+               exit 1
+           fi
+           ;;
+        t) try=true ;;
+        *) usage >&2; exit 2
+    esac
+done
+
+shift $((OPTIND - 1))
+
+[[ $# -eq 0 ]] && status
+
+cmd_apply() {
+    local pids=''
+    local r=0
+
+    if [[ -n "$device" ]]; then
+        apply "$device" && pids+=" $!"
+    else
+        # re devs: failed subshell in for loop did not trigger `set -e`
+        devs="$(iniq "$config")"
+        for d in $devs; do
+            [[ -b "$d" ]] && apply "$d" && pids+=" $!"
+        done
+    fi
+
+    for pid in $pids; do
+        wait "$pid" || (( r+=1 ))
+    done
+
+    exit $r
+}
+
+cmd_reset() {
+    if [[ -n "$device" ]]; then
+        rm "$(get_state "$device")"
+    else
+        for f in "$rundir"/*; do
+            rm "$f"
+        done
+    fi
+}
+
+cmd_restore() {
+    if [[ -n "$device" ]]; then
+        restore "$dev" "$(get_state "$device")"
+    else
+        for f in "$rundir"/*; do
+            restore "$(iniq "$f")" "$f"
+        done
+    fi
+}
+
+case "$1" in
+    apply) cmd_apply ;;
+    reset) cmd_reset ;;
+    reapply) cmd_reset; cmd_apply ;;
+    restore) cmd_restore ;;
+    status) status ;;
+    *) usage >&2; exit 2
+esac
