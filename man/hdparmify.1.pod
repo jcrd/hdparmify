@@ -35,6 +35,10 @@ Device to affect.
 
 Exit successfully if device not in config.
 
+=item B<-n>
+
+Ignore delay options.
+
 =back
 
 =head1 COMMANDS

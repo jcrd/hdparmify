@@ -10,6 +10,7 @@ readonly rundir='/run/hdparmify'
 config='/etc/hdparmify.conf'
 device=''
 try=false
+now=false
 
 usage() {
     echo 'usage: hdparmify [options] [command]
@@ -19,6 +20,7 @@ options:
   -c CONFIG  Path to config
   -d DEVICE  Device to affect
   -t         Exit successfully if device not in config
+  -n         Ignore delay options
 
 commands:
   apply      Affect devices
@@ -88,7 +90,7 @@ apply() {
     done <<< "$opts"
 
     (
-        [[ -n "${delay-}" ]] && sleep "$delay"
+        ! $now && [[ -n "${delay-}" ]] && sleep "$delay"
 
         if hdparm $args "$dev"; then
             # replace all / with - in device path
@@ -117,7 +119,7 @@ restore() {
     $restored && rm "$state"
 }
 
-while getopts ':hc:d:t' opt; do
+while getopts ':hc:d:tn' opt; do
     case "$opt" in
         h) usage; exit ;;
         c) config="$OPTARG" ;;
@@ -128,6 +130,7 @@ while getopts ':hc:d:t' opt; do
            fi
            ;;
         t) try=true ;;
+        n) now=true ;;
         *) usage >&2; exit 2
     esac
 done

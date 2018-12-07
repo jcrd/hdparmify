@@ -15,6 +15,7 @@ options:
   -c CONFIG  Path to config
   -d DEVICE  Device to affect
   -t         Exit successfully if device not in config
+  -n         Ignore delay options
 
 commands:
   apply      Affect devices
