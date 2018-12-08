@@ -1,4 +1,4 @@
-# hdparmify
+# hdparmify [![Build Status](https://travis-ci.org/jcrd/hdparmify.svg?branch=master)](https://travis-ci.org/jcrd/hdparmify)
 
 hdparmify applies **hdparm** options to hard drives via a udev rule.
 It also provides **systemd** services: _hdparmify-reapply_ to reapply
