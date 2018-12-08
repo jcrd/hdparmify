@@ -144,7 +144,7 @@ cmd_apply() {
         # re devs: failed subshell in for loop did not trigger `set -e`
         devs="$(iniq "$config")"
         for d in $devs; do
-            [[ -b "$d" ]] && apply "$d" && pids+=" $!"
+            apply "$d" && pids+=" $!"
         done
     fi
 
