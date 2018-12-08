@@ -123,12 +123,7 @@ while getopts ':hc:d:tn' opt; do
     case "$opt" in
         h) usage; exit ;;
         c) config="$OPTARG" ;;
-        d) device="$OPTARG"
-           if [[ ! -b "$device" ]]; then
-               echo "$device is not a block device" >&2
-               exit 1
-           fi
-           ;;
+        d) device="$OPTARG" ;;
         t) try=true ;;
         n) now=true ;;
         *) usage >&2; exit 2
