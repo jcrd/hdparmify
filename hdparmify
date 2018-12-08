@@ -5,7 +5,7 @@
 set -eu
 shopt -s nullglob
 
-readonly rundir='/run/hdparmify'
+readonly rundir="${HDPARMIFY_RUNDIR:-/run/hdparmify}"
 
 config='/etc/hdparmify.conf'
 device=''
