@@ -161,13 +161,17 @@ cmd_apply() {
 }
 
 cmd_reset() {
+    local r=1
+
     if [[ -n "$device" ]]; then
-        rm "$(get_state "$device")"
+        rm "$(get_state "$device")" && r=0
     else
         for f in "$rundir"/*; do
-            rm "$f"
+            rm "$f" && r=0
         done
     fi
+
+    return $r
 }
 
 cmd_restore() {
@@ -182,7 +186,7 @@ cmd_restore() {
 
 case "$1" in
     apply) cmd_apply ;;
-    reset) cmd_reset ;;
+    reset) cmd_reset || exit $? ;;
     reapply) cmd_reset; cmd_apply ;;
     restore) cmd_restore ;;
     status) status ;;
