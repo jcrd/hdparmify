@@ -142,7 +142,7 @@ cmd_apply() {
         apply "$device" && pids+=" $!"
     else
         # re devs: failed subshell in for loop did not trigger `set -e`
-        devs="$(iniq "$config")"
+        devs="$(iniq -d "$config")"
         for d in $devs; do
             apply "$d" && pids+=" $!"
         done
