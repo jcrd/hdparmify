@@ -1,8 +1,0 @@
-language: bash
-
-install:
-  - wget https://github.com/jcrd/iniq/archive/v0.1.1.tar.gz -O iniq.tar.gz
-  - tar -xvf iniq.tar.gz
-  - pushd iniq-0.1.1 && make && sudo make install && popd
-
-script: make && make test
