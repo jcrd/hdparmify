@@ -5,6 +5,8 @@
 set -eu
 shopt -s nullglob
 
+readonly VERSION=
+
 readonly rundir="${HDPARMIFY_RUNDIR:-/run/hdparmify}"
 
 config='/etc/hdparmify.conf'
@@ -21,6 +23,7 @@ options:
   -d DEVICE  Device to affect
   -t         Exit successfully if device not in config
   -n         Ignore delay options
+  -v         Show version
 
 commands:
   apply      Affect devices
@@ -119,13 +122,14 @@ restore() {
     $restored && rm "$state"
 }
 
-while getopts ':hc:d:tn' opt; do
+while getopts ':hc:d:tnv' opt; do
     case "$opt" in
         h) usage; exit ;;
         c) config="$OPTARG" ;;
         d) device="$OPTARG" ;;
         t) try=true ;;
         n) now=true ;;
+        v) echo "$VERSION"; exit ;;
         *) usage >&2; exit 2
     esac
 done

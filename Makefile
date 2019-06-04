@@ -8,7 +8,11 @@ MANPREFIX ?= $(PREFIX)/share/man
 
 MANPAGE = hdparmify.1
 
-all: $(MANPAGE)
+all: hdparmify $(MANPAGE)
+
+hdparmify: hdparmify.in
+	sed -e "s/VERSION=/VERSION=$(VERSION)/" hdparmify.in > hdparmify
+	chmod +x hdparmify
 
 $(MANPAGE): man/$(MANPAGE).pod
 	pod2man -n=hdparmify -c=hdparmify -r=$(VERSION) $< $(MANPAGE)
@@ -37,9 +41,9 @@ uninstall:
 	rm -f $(DESTDIR)$(MANPREFIX)/man1/hdparmify.1
 
 clean:
-	rm -f $(MANPAGE)
+	rm -f hdparmify $(MANPAGE)
 
-test:
+test: hdparmify
 	$(MAKE) -C test
 
 .PHONY: all install uninstall clean test

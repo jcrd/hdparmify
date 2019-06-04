@@ -39,6 +39,10 @@ Exit successfully if device not in config.
 
 Ignore delay options.
 
+=item B<-v>
+
+Show version.
+
 =back
 
 =head1 COMMANDS
