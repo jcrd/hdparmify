@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: supplantr/iniq-testrunner:1.0
+      - image: supplantr/iniq-testrunner:latest
     steps:
       - checkout
       - run: make test
