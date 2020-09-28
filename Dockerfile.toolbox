@@ -1,0 +1,7 @@
+FROM supplantr/shell-toolbox
+
+RUN dnf copr enable -y jcrd/iniq
+
+RUN dnf install -y iniq
+RUN dnf install -y perl
+RUN dnf install -y hdparm
