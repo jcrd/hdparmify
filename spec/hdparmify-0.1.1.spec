@@ -1,6 +1,6 @@
 Name: hdparmify
 Version: 0.1.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Hard drive management with hdparm
 
 License: MIT
@@ -39,7 +39,7 @@ make test
 %files
 %license LICENSE
 %doc README.md
-/etc/hdparmify.conf
+%config(noreplace) /etc/hdparmify.conf
 /usr/bin/%{name}
 /usr/lib/udev/rules.d/99-hdparmify.rules
 /usr/lib/systemd/system/hdparmify@.service
@@ -48,6 +48,9 @@ make test
 /usr/share/man/man1/%{name}.1.gz
 
 %changelog
+* Mon Sep 28 2020 James Reed <jcrd@tuta.io> - 0.1.1-2
+- Mark /etc/hdparmify.conf as configuration
+
 * Mon Sep 28 2020 James Reed <jcrd@tuta.io> - 0.1.1-1
 - Release v0.1.1
 

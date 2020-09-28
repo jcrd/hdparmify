@@ -40,7 +40,7 @@ make test
 %files
 %license LICENSE
 %doc README.md
-/etc/hdparmify.conf
+%config(noreplace) /etc/hdparmify.conf
 /usr/bin/%{name}
 /usr/lib/udev/rules.d/99-hdparmify.rules
 /usr/lib/systemd/system/hdparmify@.service
