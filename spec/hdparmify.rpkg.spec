@@ -13,11 +13,11 @@ BuildArch: noarch
 BuildRequires: perl
 
 # Required for testing.
-BuildRequires: iniq
+BuildRequires: iniq >= 0.3.0
 
 Requires: bash
 Requires: coreutils
-Requires: iniq
+Requires: iniq >= 0.3.0
 Requires: hdparm
 
 %global debug_package %{nil}

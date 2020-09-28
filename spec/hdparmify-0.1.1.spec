@@ -1,22 +1,22 @@
 Name: hdparmify
-Version: 0.1.0
+Version: 0.1.1
 Release: 1%{?dist}
 Summary: Hard drive management with hdparm
 
 License: MIT
 URL: https://github.com/jcrd/hdparmify
-Source0: https://github.com/jcrd/hdparmify/archive/v0.1.0.tar.gz
+Source0: https://github.com/jcrd/hdparmify/archive/v0.1.1.tar.gz
 
 BuildArch: noarch
 
 BuildRequires: perl
 
 # Required for testing.
-BuildRequires: iniq
+BuildRequires: iniq >= 0.3.0
 
 Requires: bash
 Requires: coreutils
-Requires: iniq
+Requires: iniq >= 0.3.0
 Requires: hdparm
 
 %global debug_package %{nil}
@@ -48,5 +48,8 @@ make test
 /usr/share/man/man1/%{name}.1.gz
 
 %changelog
+* Mon Sep 28 2020 James Reed <jcrd@tuta.io> - 0.1.1-1
+- Release v0.1.1
+
 * Mon Sep 28 2020 James Reed <jcrd@tuta.io> - 0.1.0-1
 - Initial package
