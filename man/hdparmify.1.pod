@@ -67,7 +67,7 @@ Restore devices to their default state.
 
 Currently only the I<standby_timeout=> option is restored by setting it to 0.
 
-=item B<restore>
+=item B<status>
 
 Print status.
 
