@@ -5,7 +5,7 @@
 set -eu
 shopt -s nullglob
 
-readonly VERSION=
+readonly VERSION=@VERSION
 
 readonly rundir="${HDPARMIFY_RUNDIR:-/run/hdparmify}"
 

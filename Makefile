@@ -11,7 +11,7 @@ MANPAGE = hdparmify.1
 all: hdparmify $(MANPAGE)
 
 hdparmify: hdparmify.in
-	sed -e "s/VERSION=/VERSION=$(VERSION)/" hdparmify.in > hdparmify
+	sed -e "s/@VERSION/$(VERSION)/" hdparmify.in > hdparmify
 	chmod +x hdparmify
 
 $(MANPAGE): man/$(MANPAGE).pod
