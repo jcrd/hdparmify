@@ -8,4 +8,3 @@ ExecStart=/usr/bin/hdparmify reapply
 
 [Install]
 WantedBy=sleep.target
-Also=hdparmify-restore.service
