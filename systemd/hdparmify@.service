@@ -5,3 +5,4 @@ After=%i.device
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/hdparmify -td /%I apply
+RemainAfterExit=yes
