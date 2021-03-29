@@ -1,4 +1,4 @@
-# hdparmify [![CircleCI](https://circleci.com/gh/jcrd/hdparmify.svg?style=svg)](https://circleci.com/gh/jcrd/hdparmify)
+# hdparmify ![test](https://github.com/jcrd/hdparmify/actions/workflows/test.yml/badge.svg)
 
 hdparmify applies **hdparm** options to hard drives via a udev rule.
 It also provides **systemd** services: _hdparmify-reapply_ to reapply
