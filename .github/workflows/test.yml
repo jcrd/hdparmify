@@ -8,8 +8,6 @@ jobs:
     container: supplantr/iniq-testrunner:latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
 
       - name: Test
         run: make test
