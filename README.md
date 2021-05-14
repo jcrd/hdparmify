@@ -5,6 +5,18 @@ It also provides **systemd** services: _hdparmify-reapply_ to reapply
 options after waking up and _hdparmify-restore_ to restore devices to
 their default state before shutdown.
 
+## Packages
+
+* **RPM** package available from [copr][1]. [![Copr build status](https://copr.fedorainfracloud.org/coprs/jcrd/hdparmify/package/hdparmify/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/jcrd/hdparmify/package/hdparmify/)
+
+  Install with:
+  ```
+  dnf copr enable jcrd/hdparmify
+  dnf install hdparmify
+  ```
+
+[1]: https://copr.fedorainfracloud.org/coprs/jcrd/hdparmify/
+
 ## Usage
 
 ```
