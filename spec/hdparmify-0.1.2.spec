@@ -1,11 +1,11 @@
 Name: hdparmify
-Version: 0.1.1
+Version: 0.1.2
 Release: 2%{?dist}
 Summary: Hard drive management with hdparm
 
 License: MIT
 URL: https://github.com/jcrd/hdparmify
-Source0: https://github.com/jcrd/hdparmify/archive/v0.1.1.tar.gz
+Source0: https://github.com/jcrd/hdparmify/archive/v0.1.2.tar.gz
 
 BuildArch: noarch
 
@@ -48,6 +48,9 @@ make test
 /usr/share/man/man1/%{name}.1.gz
 
 %changelog
+* Tue Jul 27 2021 James Reed <james@twiddlingbits.net> - 0.1.2-1
+- Release v0.1.2
+
 * Mon Sep 28 2020 James Reed <jcrd@tuta.io> - 0.1.1-2
 - Mark /etc/hdparmify.conf as configuration
 
