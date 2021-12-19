@@ -1,12 +1,12 @@
-Name: {{{ git_name name="hdparmify" }}}
-Version: {{{ git_version lead="$(git tag | sed -n 's/^v//p' | sort --version-sort -r | head -n1)" }}}
+Name: {{{ git_cwd_name name="hdparmify" }}}
+Version: {{{ git_cwd_version lead="$(git tag | sed -n 's/^v//p' | sort --version-sort -r | head -n1)" }}}
 Release: 1%{?dist}
 Summary: Hard drive management with hdparm
 
 License: MIT
 URL: https://github.com/jcrd/hdparmify
-VCS: {{{ git_vcs }}}
-Source0: {{{ git_pack }}}
+VCS: {{{ git_cwd_vcs }}}
+Source0: {{{ git_cwd_pack }}}
 
 BuildArch: noarch
 
@@ -26,7 +26,7 @@ Requires: hdparm
 hdparmify applies hdparm options to hard drives via a udev rule. It also provides systemd services: hdparmify-reapply to reapply options after waking up and hdparmify-restore to restore devices to their default state before shutdown.
 
 %prep
-{{{ git_setup_macro }}}
+{{{ git_cwd_setup_macro }}}
 
 %build
 %make_build PREFIX=/usr
@@ -49,4 +49,4 @@ make test
 /usr/share/man/man1/%{name}.1.gz
 
 %changelog
-{{{ git_changelog }}}
+{{{ git_cwd_changelog }}}
